@@ -19,7 +19,19 @@ public class CannonController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        CannonFire();
+        if (Input.GetMouseButton(0) && !FindObjectOfType<EndLevel>().EndPanel.active)
+        {
+            Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+            Vector2 mousePos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            if (mousePos.x <= screenPoint.x)
+            {
+                CannonTiltLeft();
+            }
+            else
+            {
+                CannonTiltRight();
+            }
+        }
     }
 
     public void CannonTiltLeft()
@@ -35,10 +47,16 @@ public class CannonController : MonoBehaviour {
 
     void CannonFire()
     {
-        if (Input.GetKeyDown("up") && canFire)
+        if (canFire)
         {
             canFire = false;
-            Instantiate(pinBall, barrelTip.transform.position, barrelTip.transform.rotation);
+            GameObject _pinBall = Instantiate(pinBall, barrelTip.transform.position, barrelTip.transform.rotation);
+            GameObject.FindGameObjectWithTag("EndScreen").gameObject.GetComponent<EndLevel>().pinBall = _pinBall;
         }
+    }
+
+    void OnMouseDown()
+    {
+        CannonFire();
     }
 }

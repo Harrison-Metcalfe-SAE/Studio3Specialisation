@@ -6,8 +6,12 @@ using UnityEngine.UI;
 public class PinBallController : MonoBehaviour {
 
     public float thrust;
+    private Vector2 velocityOnBall;
+    public float speed;
     public Rigidbody2D pinBallrb;
     public GameObject cannon;
+    private float initializationTime;
+    public float timeSinceInitialization;
 
     public int bounces;
     public int score;
@@ -15,8 +19,7 @@ public class PinBallController : MonoBehaviour {
     public float scoreMultiplierTimer;
 
 	public GameObject scoreUI;
-	public GameObject endText;
-
+    public GameObject endText;
     public GameObject scoreText;
 
     //////////////////NOT MY VARIABLES///////////////////
@@ -34,21 +37,27 @@ public class PinBallController : MonoBehaviour {
         cannon = GameObject.FindGameObjectWithTag("Cannon");
         mainCamera = FindObjectOfType<Camera>();
         scoreText = GameObject.FindGameObjectWithTag("ScoreText");
+        endText = GameObject.FindGameObjectWithTag("EndText");
 
         Vector2 direction = transform.position - cannon.transform.position;
         direction.Normalize();
         pinBallrb.AddForce(direction * thrust);
-	}
+
+        initializationTime = Time.timeSinceLevelLoad;
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        velocityOnBall = GetComponent<Rigidbody2D>().velocity;
+        speed = velocityOnBall.magnitude;
         ScoreIncrease();
-	}
+        timeSinceInitialization = Time.timeSinceLevelLoad - initializationTime;
+    }
 
     void ScoreIncrease()
     {
         score = bounces * 1000;
-        scoreText.GetComponent<Text>().text = "Score:" + score;
+        // scoreText.GetComponent<Text>().text = "Score:" + score;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
