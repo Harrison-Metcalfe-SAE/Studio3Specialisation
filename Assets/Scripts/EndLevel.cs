@@ -14,6 +14,9 @@ public class EndLevel : MonoBehaviour
 
     public int existingScore;
 
+    public string levelNumber;
+    public string nextLevelNumber;
+
 
     // Use this for initialization
     void Start()
@@ -42,6 +45,45 @@ public class EndLevel : MonoBehaviour
             existingScore++;
             yield return new WaitForSeconds(delayTime);
             scoreText.GetComponent<Text>().text = existingScore.ToString();
+        }
+    }
+
+    public void RestartLevel()
+    {
+        if (pinBall.GetComponent<PinBallController>().score >= PlayerPrefs.GetInt(levelNumber + "Score"))
+        {
+            PlayerPrefs.SetInt(levelNumber + "Score", pinBall.GetComponent<PinBallController>().score);
+            Application.LoadLevel(Application.loadedLevel);
+        }
+        else
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
+    }
+
+    public void NextLevel()
+    {
+        if (pinBall.GetComponent<PinBallController>().score >= PlayerPrefs.GetInt(levelNumber + "Score"))
+        {
+            PlayerPrefs.SetInt(levelNumber + "Score", pinBall.GetComponent<PinBallController>().score);
+            Application.LoadLevel(nextLevelNumber);
+        }
+        else
+        {
+            Application.LoadLevel(nextLevelNumber);
+        }
+    }
+
+    public void ReturnToMenu()
+    {
+        if(pinBall.GetComponent<PinBallController>().score >= PlayerPrefs.GetInt(levelNumber + "Score"))
+        {
+            PlayerPrefs.SetInt(levelNumber + "Score", pinBall.GetComponent<PinBallController>().score);
+            Application.LoadLevel("menu");
+        }
+        else
+        {
+            Application.LoadLevel("menu");
         }
     }
 }

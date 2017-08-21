@@ -15,7 +15,7 @@ public class PinBallController : MonoBehaviour {
 
     public int bounces;
     public int score;
-    public float currScoreMultiplier;
+    public int currScoreMultiplier;
     public float scoreMultiplierTimer;
 
 	public GameObject scoreUI;
@@ -64,15 +64,30 @@ public class PinBallController : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Wall")
         {
-            bounces += 1;
-			ContactPoint2D contact = collision.contacts [0];
-			Quaternion rot = Quaternion.FromToRotation (Vector2.up, contact.normal);
-			Vector2 pos = contact.point;
-			Instantiate (scoreUI, pos, rot);
-            //////////////////NOT MY CODE///////////////////
-            shakeAmt = collision.relativeVelocity.magnitude * .0025f;
-            InvokeRepeating("CameraShake", 0, .01f);
-            Invoke("StopShaking", 0.3f);
+            if(scoreMultiplierTimer == 0)
+            {
+                bounces += 1;
+                ContactPoint2D contact = collision.contacts[0];
+                Quaternion rot = Quaternion.FromToRotation(Vector2.up, contact.normal);
+                Vector2 pos = contact.point;
+                Instantiate(scoreUI, pos, rot);
+                //////////////////NOT MY CODE///////////////////
+                shakeAmt = collision.relativeVelocity.magnitude * .0025f;
+                InvokeRepeating("CameraShake", 0, .01f);
+                Invoke("StopShaking", 0.3f);
+            }
+            if(scoreMultiplierTimer >= 0)
+            {
+                bounces += (1 * currScoreMultiplier);
+                ContactPoint2D contact = collision.contacts[0];
+                Quaternion rot = Quaternion.FromToRotation(Vector2.up, contact.normal);
+                Vector2 pos = contact.point;
+                Instantiate(scoreUI, pos, rot);
+                //////////////////NOT MY CODE///////////////////
+                shakeAmt = collision.relativeVelocity.magnitude * .0025f;
+                InvokeRepeating("CameraShake", 0, .01f);
+                Invoke("StopShaking", 0.3f);
+            }
         }
     }
 
