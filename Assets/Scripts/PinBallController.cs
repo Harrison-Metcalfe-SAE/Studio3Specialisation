@@ -52,6 +52,7 @@ public class PinBallController : MonoBehaviour {
         speed = velocityOnBall.magnitude;
         ScoreIncrease();
         timeSinceInitialization = Time.timeSinceLevelLoad - initializationTime;
+        scoreMultiplierTimer -= Time.deltaTime;
     }
 
     void ScoreIncrease()
@@ -64,7 +65,7 @@ public class PinBallController : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Wall")
         {
-            if(scoreMultiplierTimer == 0)
+            if(scoreMultiplierTimer <= 0)
             {
                 bounces += 1;
                 ContactPoint2D contact = collision.contacts[0];
@@ -76,7 +77,7 @@ public class PinBallController : MonoBehaviour {
                 InvokeRepeating("CameraShake", 0, .01f);
                 Invoke("StopShaking", 0.3f);
             }
-            if(scoreMultiplierTimer >= 0)
+            if(scoreMultiplierTimer > 0)
             {
                 bounces += (1 * currScoreMultiplier);
                 ContactPoint2D contact = collision.contacts[0];

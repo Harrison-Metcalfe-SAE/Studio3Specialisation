@@ -5,7 +5,7 @@ using UnityEngine;
 public class PointMultiplier : MonoBehaviour {
 
     public GameObject pinBall;
-    public float scoreMultiplier;
+    public int scoreMultiplier;
     public float multiplierTime;
 
 	// Use this for initialization
@@ -17,4 +17,14 @@ public class PointMultiplier : MonoBehaviour {
 	void Update () {
         pinBall = GameObject.FindGameObjectWithTag("Ball");
 	}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            pinBall.GetComponent<PinBallController>().currScoreMultiplier = scoreMultiplier;
+            pinBall.GetComponent<PinBallController>().scoreMultiplierTimer = multiplierTime;
+            Destroy(this.gameObject);
+        }
+    }
 }
