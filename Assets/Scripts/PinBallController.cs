@@ -22,13 +22,14 @@ public class PinBallController : MonoBehaviour {
     public GameObject endText;
     public GameObject scoreText;
 
+    public long vibrationMultiplier = 2;
+
     //////////////////NOT MY VARIABLES///////////////////
     public Vector3 originalCameraPosition;
 
     float shakeAmt = 0;
 
     public Camera mainCamera;
-
 
 
     // Use this for initialization
@@ -61,6 +62,11 @@ public class PinBallController : MonoBehaviour {
         // scoreText.GetComponent<Text>().text = "Score:" + score;
     }
 
+    void Vibrate( long timeInMilliseconds )
+    {
+        Vibration.Vibrate(timeInMilliseconds * vibrationMultiplier);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Wall")
@@ -72,6 +78,8 @@ public class PinBallController : MonoBehaviour {
                 Quaternion rot = Quaternion.FromToRotation(Vector2.up, contact.normal);
                 Vector2 pos = contact.point;
                 Instantiate(scoreUI, pos, rot);
+                Vibrate((long)collision.relativeVelocity.magnitude);
+
                 //////////////////NOT MY CODE///////////////////
                 shakeAmt = collision.relativeVelocity.magnitude * .0025f;
                 InvokeRepeating("CameraShake", 0, .01f);
@@ -84,6 +92,8 @@ public class PinBallController : MonoBehaviour {
                 Quaternion rot = Quaternion.FromToRotation(Vector2.up, contact.normal);
                 Vector2 pos = contact.point;
                 Instantiate(scoreUI, pos, rot);
+                Vibrate((long)collision.relativeVelocity.magnitude);
+
                 //////////////////NOT MY CODE///////////////////
                 shakeAmt = collision.relativeVelocity.magnitude * .0025f;
                 InvokeRepeating("CameraShake", 0, .01f);

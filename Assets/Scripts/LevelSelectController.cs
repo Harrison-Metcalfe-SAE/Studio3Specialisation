@@ -33,16 +33,19 @@ public class LevelSelectController : MonoBehaviour {
 
     public void levelOnePanelClose()
     {
+        Vibration.Vibrate(25);
         levelOnePanel.SetActive(false);
     }
 
     public void loadLevelOnePanel()
     {
+        Vibration.Vibrate(25);
         levelOnePanel.SetActive(true);
     }
 
     public void loadLevelOne()
     {
+        Vibration.Vibrate(25);
         Application.LoadLevel("levelOne");
     }
 

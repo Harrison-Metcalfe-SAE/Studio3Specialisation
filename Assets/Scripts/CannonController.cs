@@ -43,7 +43,7 @@ public class CannonController : MonoBehaviour {
 	public void CannonTiltRight()
 	{
 		cannonBarrel.MoveRotation(cannonBarrel.rotation - rotationSpeed * Time.fixedDeltaTime);
-	}
+    }
 
     void CannonFire()
     {
@@ -52,6 +52,10 @@ public class CannonController : MonoBehaviour {
             canFire = false;
             GameObject _pinBall = Instantiate(pinBall, barrelTip.transform.position, barrelTip.transform.rotation);
             GameObject.FindGameObjectWithTag("EndScreen").gameObject.GetComponent<EndLevel>().pinBall = _pinBall;
+        }
+        else
+        {
+            Application.LoadLevel(Application.loadedLevel);
         }
     }
 
